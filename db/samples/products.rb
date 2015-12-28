@@ -74,6 +74,8 @@ products = [
   }
 ]
 
+
+searchable_products = []
 products.each do |product_attrs|
   eur_price = product_attrs.delete(:eur_price)
   Spree::Config[:currency] = "USD"
@@ -84,6 +86,11 @@ products.each do |product_attrs|
   product.price = eur_price
   product.shipping_category = shipping_category
   product.save!
+  searchable_products << product
 end
+
+Spree::Product.update_all(:unsearchable=>true)
+Spree::Product.where(id: searchable_products.map(&:id)).update(:unsearchable=>false)
+
 
 Spree::Config[:currency] = "USD"
