@@ -73,10 +73,17 @@ products = [
     :eur_price => 14
   }
 ]
+require 'csv'
+csv_path = "tmp/products.csv"
+binding.pry
+CSV.open(csv_path,header: products.first.keys) do |csv|
+  products.each{ csv << products.values }
+end
 
 
 searchable_products = []
-products.each do |product_attrs|
+CSV.open(csv_path) do |product_attrs|
+  product_attrs = product_attrs.to_hash
   eur_price = product_attrs.delete(:eur_price)
   Spree::Config[:currency] = "USD"
 
