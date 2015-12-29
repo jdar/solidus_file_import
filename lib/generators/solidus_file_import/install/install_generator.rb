@@ -15,6 +15,12 @@ module SolidusFileImport
 
       def add_migrations
         run 'bundle exec rake railties:install:migrations FROM=solidus_file_import'
+        run 'bundle exec rake solidus_file_import:samples' if ran_migrations?
+      end
+
+      def ran_migrations?
+        #TODO 
+        true
       end
 
       def run_migrations
